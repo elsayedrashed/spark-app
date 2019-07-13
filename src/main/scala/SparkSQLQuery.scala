@@ -58,8 +58,9 @@ object SparkSQLQuery {
     Logger.getLogger("org").setLevel(Level.ERROR)
 
     // Set constants
-    val appName = "SparkApp"
+    val appName = "spark-app"
     val sparkMaster = "local[4]"
+    val sqlWhDirectory = "C:/sqlWhDirectory/"
 
     // Get command line arguments
     val csvDelimiter = args(0)
@@ -70,11 +71,7 @@ object SparkSQLQuery {
 
     println("Determines the top " + topN + " most rated TV series")
     // Use SparkSession interface
-    val sparkSession = SparkSession
-      .builder
-      .appName(appName)
-      .master(sparkMaster)
-      .getOrCreate()
+    val sparkSession = SparkSessionCreate.createSession(appName,sparkMaster,sqlWhDirectory)
 
     // Show the result
     val resultDF = sparkSQLtopN(sparkSession,csvDelimiter,topN,animeFile,ratingFile)
