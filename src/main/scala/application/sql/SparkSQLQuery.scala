@@ -1,6 +1,7 @@
-package main.scala
+package application.sql
 
-import main.scala.SparkUtils.{createSQLView, saveCSV}
+import application.utility.SparkSessionCreate
+import application.utility.SparkUtils.{createSQLView, saveCSV}
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.sql.{DataFrame, SparkSession}
 

@@ -1,8 +1,9 @@
-package main.scala
+package application.utility
 
-import org.apache.spark.sql._
 import java.text.SimpleDateFormat
 import java.util.Calendar
+
+import org.apache.spark.sql.{DataFrame, SparkSession}
 
 object SparkUtils {
 

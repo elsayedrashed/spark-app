@@ -1,5 +1,6 @@
 package main.scala
 
+import application.sql.SparkSQLQuery
 import org.scalatest.FunSuite
 
 class SparkSQLQueryTest extends FunSuite {
