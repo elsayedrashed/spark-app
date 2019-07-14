@@ -1,4 +1,4 @@
-package application.utility
+package application.spark
 
 import org.apache.spark.sql.SparkSession
 

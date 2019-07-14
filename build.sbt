@@ -1,3 +1,5 @@
+organization := "application"
+
 name := "spark-app"
 
 version := "0.1"
@@ -30,12 +32,3 @@ testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest,
   "-y", "org.scalatest.FlatSpec",
   "-y", "org.scalatest.FeatureSpec"
 )
-
-// Assembly
-assemblyMergeStrategy in assembly := {
-  case PathList("META-INF", xs @ _*) => MergeStrategy.discard
-  case PathList("org", "apache", xs @ _*) => MergeStrategy.last
-  case "plugin.properties" => MergeStrategy.last
-  case "log4j.properties" => MergeStrategy.last
-  case x => MergeStrategy.first
-}
