@@ -7,13 +7,6 @@ import org.apache.spark.sql.{DataFrame, SparkSession}
 
 object SparkUtils {
 
-  def printCurrentTime (msg:String,nc:Integer) {
-    val dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")
-    val formattedDate = dateFormat.format(Calendar.getInstance().getTime())
-    println(msg.padTo(nc,' ')+ " : " + formattedDate)
-
-  }
-
   def loadCSV(sparkSession:SparkSession,csvDelimiter:String,filename:String): DataFrame = {
 
     var dataDF = sparkSession.read

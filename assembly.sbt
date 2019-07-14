@@ -7,15 +7,8 @@ assemblyMergeStrategy in assembly := {
   case x => MergeStrategy.first
 }
 
+// Default Main Class
 mainClass in Compile := Some("application.Main")
-
+// File name of assembled jar
 assemblyJarName in assembly := { s"${name.value}_${scalaVersion.value}-${version.value}-assembly.jar" }
 
-/*
-artifact in (Compile, assembly) := {
-  val art = (artifact in (Compile, assembly)).value
-  art.withClassifier(Some("assembly"))
-}
-
-addArtifact(artifact in (Compile, assembly), assembly)
-*/

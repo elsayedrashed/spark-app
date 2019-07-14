@@ -1,8 +1,6 @@
-organization := "application"
-
 name := "spark-app"
 
-version := "0.1"
+version := "1.0"
 
 scalaVersion := "2.11.8"
 

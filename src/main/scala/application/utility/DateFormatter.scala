@@ -1,6 +1,9 @@
 package application.utility
 
 import java.sql.Timestamp
+import java.text.SimpleDateFormat
+import java.util.Calendar
+
 import org.joda.time.format.DateTimeFormat
 
 object DateFormatter {
@@ -10,6 +13,13 @@ object DateFormatter {
   val formatterStandardNoMS = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss")
 
   val formatterOutputFile = DateTimeFormat.forPattern("yyyyMMdd")
+
+  def printCurrentTime (msg:String,nc:Integer) {
+    val dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS")
+    val formattedDate = dateFormat.format(Calendar.getInstance().getTime())
+    println(msg.padTo(nc,' ')+ " : " + formattedDate)
+
+  }
 
   def formatToTimestamp(date: String) = {
     try {

@@ -1,13 +1,11 @@
 package application.query
 
-import application.spark.SparkSessionCreate
 import application.spark.SparkUtils.{createSQLView, saveCSV}
-import org.apache.log4j.{Level, Logger}
 import org.apache.spark.sql.{DataFrame, SparkSession}
 
 object SparkSQLQuery {
 
-  def sparkSQLtopN(sparkSession:SparkSession,csvDelimiter:String,topn:String,animeFile:String,ratingFile:String): DataFrame = {
+  def sparkQuery(sparkSession:SparkSession,csvDelimiter:String,topn:String,animeFile:String,ratingFile:String): DataFrame = {
 
     // Load anime CSV file and create SQL view
     createSQLView(sparkSession,csvDelimiter,animeFile,"v_anime")
@@ -17,10 +15,10 @@ object SparkSQLQuery {
 
     // Filter anime table by TV series with over 10 episodes
     sparkSession.sql(
-      "SELECT a.anime_id, a.name, a.genre " +
-        "FROM v_anime a " +
-        "WHERE a.type = 'TV' " +
-        "AND a.episodes > 10 ")
+      "SELECT anime_id, name, genre " +
+        "FROM v_anime " +
+        "WHERE type = 'TV' " +
+        "AND episodes > 10 ")
       .createOrReplaceTempView("v_anime_filter")
 
     // Calculate rating from rating table
@@ -53,11 +51,10 @@ object SparkSQLQuery {
   }
 
   // execute function where the action happens
-  def execute(sparkSession:SparkSession,csvDelimiter:String,topN:String,animeFile:String,ratingFile:String,outputPath:String) {
-
-    println("Determines the top " + topN + " most rated TV series")
+  def sparkExecute(sparkSession:SparkSession,csvDelimiter:String,topN:String,animeFile:String,ratingFile:String,outputPath:String) {
+    // Determines the top N most rated TV series
     // Show the result
-    val resultDF = sparkSQLtopN(sparkSession,csvDelimiter,topN,animeFile,ratingFile)
+    val resultDF = sparkQuery(sparkSession,csvDelimiter,topN,animeFile,ratingFile)
     resultDF
       .select("anime_id", "genre", "rating", "num_rating")
       .show(false)
