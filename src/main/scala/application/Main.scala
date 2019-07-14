@@ -28,9 +28,9 @@ object Main extends App{
   // Get command line arguments
   val csvDelimiter = "."
   val topN = "10"
-  val animeFile = "src/test/resources/input/anime.csv"
-  val ratingFile = "src/test/resources/input/rating.csv.gz"
-  var outputPath = "src/test/resources/output/top10"
+  val animeFile = "src/main/resources/input/anime.csv"
+  val ratingFile = "src/main/resources/input/rating.csv.gz"
+  var outputPath = "src/main/resources/output/top10"
 
   // Run Jobs
   run(spark,csvDelimiter,topN,animeFile,ratingFile,outputPath)
