@@ -21,11 +21,11 @@ resolvers ++= Seq(
 libraryDependencies ++= Seq(
   "org.apache.spark" %% "spark-core" % sparkVersion % "provided" withSources(),
   "org.apache.spark" %% "spark-sql" % sparkVersion % "provided" withSources(),
-  "com.typesafe" % "config" % typeSafeVersion,
-  "org.slf4j" % "slf4j-api" % slf4jVersion,
-  "org.slf4j" % "slf4j-simple" % slf4jVersion % Test,
   "org.specs2" %% "specs2-core" % specs2Version % Test,
   "org.specs2" %% "specs2-mock" % specs2Version % Test,
+  "org.slf4j" % "slf4j-api" % slf4jVersion,
+  "org.slf4j" % "slf4j-simple" % slf4jVersion % Test,  
+  "com.typesafe" % "config" % typeSafeVersion,
   "com.google.guava" % "guava" % guavaVersion
 )
 
