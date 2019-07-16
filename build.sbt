@@ -8,6 +8,7 @@ scalaVersion := "2.11.8"
 
 val sparkVersion = "2.4.3"
 val ScalaTestVersion = "3.0.8"
+val typeSafeVersion = "1.3.4"
 
 resolvers ++= Seq(
   "apache-snapshots" at "http://repository.apache.org/snapshots/"
@@ -16,7 +17,8 @@ resolvers ++= Seq(
 // Apache Spark
 libraryDependencies ++= Seq(
   "org.apache.spark" %% "spark-core" % sparkVersion % "provided" withSources(),
-  "org.apache.spark" %% "spark-sql" % sparkVersion % "provided" withSources()
+  "org.apache.spark" %% "spark-sql" % sparkVersion % "provided" withSources(),
+  "com.typesafe" % "config" % typeSafeVersion
 )
 
 // Test Framework
