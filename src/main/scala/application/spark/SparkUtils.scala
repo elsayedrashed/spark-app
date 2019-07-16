@@ -1,9 +1,9 @@
 package application.spark
 
-import java.text.SimpleDateFormat
-import java.util.Calendar
-
 import org.apache.spark.sql.{DataFrame, SparkSession}
+import org.apache.spark.sql.expressions.Window
+import org.apache.spark.sql.functions.{col, desc, rank}
+import org.apache.spark.sql.{Column, Dataset, Row}
 
 object SparkUtils {
 
@@ -52,5 +52,29 @@ object SparkUtils {
     loadCSV(sparkSession,csvDelimiter,filename)
       // Creates a temporary view using DataFrame
       .createOrReplaceTempView(viewname)
+  }
+
+  def keepFirstLineOfPartition(dataset: Dataset[Row], partitionByColumnsAsString: List[String], orderByColumn: String): Dataset[Row] = {
+    val partitionByColumns = partitionByColumnsAsString.map(name => col(name))
+    keepFirstLineOfPartition(dataset, partitionByColumns, Seq(desc(orderByColumn)))
+  }
+
+  def keepFirstLineOfPartition(dataset: Dataset[Row], partitionByColumns: Seq[Column], orderByColumns: Seq[Column]): Dataset[Row] = {
+    val rankColumnName = "RANK"
+    rankOverPartition(dataset, rankColumnName, partitionByColumns, orderByColumns)
+      .where(col(rankColumnName) === "1")
+      .drop(rankColumnName)
+  }
+
+  def rankOverPartition(dataset: Dataset[Row], rankColumnName: String, partitionByColumns: Seq[Column], orderByColumns: Seq[Column]) = {
+    dataset
+      .withColumn(rankColumnName, rank() over Window
+        .partitionBy(
+          partitionByColumns: _*
+        )
+        .orderBy(
+          orderByColumns: _*
+        )
+      )
   }
 }
