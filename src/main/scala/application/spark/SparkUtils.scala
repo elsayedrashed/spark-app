@@ -2,10 +2,21 @@ package application.spark
 
 import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.apache.spark.sql.expressions.Window
-import org.apache.spark.sql.functions.{col, desc, rank}
+import org.apache.spark.sql.functions.{col, dense_rank, desc, lit, rank}
 import org.apache.spark.sql.{Column, Dataset, Row}
 
 object SparkUtils {
+
+  def createSession(sparkAppName:String,sparkMaster:String,sqlWhDirectory:String): SparkSession = {
+    val spark = SparkSession
+      .builder
+      .appName(sparkAppName)
+      .master(sparkMaster)
+      .config("spark.sql.warehouse.dir", sqlWhDirectory)
+      .getOrCreate()
+
+    return spark
+  }
 
   def loadCSV(sparkSession:SparkSession,csvDelimiter:String,filename:String): DataFrame = {
 
@@ -44,6 +55,24 @@ object SparkUtils {
         .option("quoteAll","true")
         .save(outputPath)
     }
+  }
+
+  def merge(datasets: Seq[Dataset[Row]], primaryKey: Seq[String]) = {
+    val deltaIndexCol = "DELTA_INDEX"
+    val rankCol = "DELTA_RANK"
+    val windowSpec = Window
+      .partitionBy(primaryKey.map(str => col(str)): _*)
+      .orderBy(col(deltaIndexCol).desc)
+
+    datasets
+      .zipWithIndex
+      .map {
+        case (dataset, index) => dataset.withColumn(deltaIndexCol, lit(index))
+      }
+      .reduceLeft { (ds1, ds2) => ds1.union(ds2) }
+      .withColumn(rankCol, dense_rank().over(windowSpec))
+      .filter(col(rankCol).===(1))
+      .drop(deltaIndexCol, rankCol)
   }
 
   def createSQLView(sparkSession:SparkSession,csvDelimiter:String,filename:String,viewname:String) {

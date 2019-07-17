@@ -1,6 +1,6 @@
 package application.test
 
-import application.spark.SparkSessionCreate
+import application.spark.SparkUtils
 import application.query.SparkSQLQuery
 import application.utility.AppConfig
 import org.apache.log4j.{Level, Logger}
@@ -19,7 +19,7 @@ class SparkSQLQueryTest extends FunSuite {
   println(ac.SPARK_SQL_WH_DIRECTORY)
 
   // Use SparkSession interface
-  val spark = SparkSessionCreate.createSession(ac.SPARK_APP_NAME,ac.SPARK_MASTER,ac.SPARK_SQL_WH_DIRECTORY)
+  val spark = SparkUtils.createSession(ac.SPARK_APP_NAME,ac.SPARK_MASTER,ac.SPARK_SQL_WH_DIRECTORY)
 
   test("Test Case 1: Top 10") {
     val topN = "10"
